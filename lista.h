@@ -28,5 +28,6 @@ int inserir(void* item, Lista* lista) {
     else {
         lista->itens[lista->ultimo] = item;
         lista->ultimo++;
+        return 1;
     }
 }
