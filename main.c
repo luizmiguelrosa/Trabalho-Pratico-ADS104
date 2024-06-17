@@ -1,13 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "lista.h"
-#include "container_navio.c"
+#include "menu.c"
 
 #define MaxConteineresPorto 100
 
-void exibir_menu();
-
-void exibir_gerenciar_conteineres(Lista* porto);
+int remover_container(int idConteiner, Lista* porto);
 
 int main()
 {
@@ -37,10 +34,10 @@ int main()
                 printf("-> ");
                 scanf("%d", &escolha_container);
 
+                system("cls");
                 switch (escolha_container)
                 {
                 case 1: //          Adicionar Conteiner
-                    system("cls");
                     printf("\n===================================================\n");
                     printf("              Adicionando Conteineres                \n");
                     printf("===================================================\n\n");
@@ -49,6 +46,7 @@ int main()
                     
                     printf("  Digite a Identificacao do Conteinere: ");
                     scanf("%d", &idContainer);
+
 
                     printf("\n  Digite a Identificacao do Navio Responsavel: ");
                     scanf("%d", &idNavio);
@@ -59,16 +57,39 @@ int main()
                         printf("\n  [!] Conteiner Adicionado com Sucesso !\n");
                     else
                         printf("\n  [X] Capacidade Maxima de Conteineres Atingida\n");
-                    
-                    getchar();
-                    getchar();
 
                     break;
                 
+                case 2: //          Removendo Conteiner
+                    exibir_tabela_conteineres(&porto);
+
+                    printf("\n===================================================\n");
+                    printf("              Removendo Conteineres                \n");
+                    printf("===================================================\n\n");
+
+                    if (!vazia(&porto)) {
+                        int idConteiner;
+
+                        printf("  Digite Identificacao do Conteiner que deseja remover: ");
+                        scanf("%d", &idConteiner);
+
+                        if (remover_container(idConteiner, &porto))
+                            printf("\n  [!] Conteiner removido com Sucesso !\n");
+                        else
+                            printf("\n  [X] Conteiner inexistente !\n");
+
+                    } else {
+                        printf("\n  [X] Sem conteineres registrados !\n");
+                    }
+                    break;
+
                 default:
                     loop_conteiner = !loop_conteiner;
                     break;
                 }
+
+                getchar();
+                getchar();
             }
             
             break;
@@ -79,52 +100,21 @@ int main()
         }
     }
     
-    
     return 0;
 }
 
-void exibir_gerenciar_conteineres(Lista* porto) {
-    if (vazia(porto)) {
-        printf("  +---------------------------------+\n");
-        printf("  |   Sem conteineres registrados   |\n");
-        printf("  +---------------------------------+\n");
-    } else {
-        printf("+-------------------------+---------------------+\n");
-        printf("|  Conteineres no Porto   | Navios Responsaveis |\n");
-        printf("+-------------------------+---------------------+\n");
-
-        for (int i = 0; i < porto->ultimo; i++) {
-            Container* container_aux = porto->itens[i];
-            printf("|           %-13d |        %-10d |\n", container_aux->idContainer, container_aux->idNavio);
-        }
-        printf("+-------------------------+---------------------+\n");
+int procura_conteiner(int idConteiner, Lista* porto) {
+    for (int i = 0; i < porto->ultimo; i++) {
+        Container* aux = porto->itens[i];
+        if (aux->idContainer == idConteiner)
+            return i;
     }
-
-    printf("\n=========================================\n");
-    printf("               OPCOES              \n");
-    printf("=========================================\n\n");
-    printf("  1. Adicionar Conteiner\n");
-    printf("  2. Remover Conteiner\n");
-    printf("  0. Sair\n\n");
-    printf("=========================================\n\n");
-    
+    return -1;
 }
 
-void exibir_relatorio(int total_containers, int total_ships_waiting) {
-    printf("+-------------------------+-------------------+\n");
-    printf("|  Conteineres no Porto   |  Navios em Espera |\n");
-    printf("+-------------------------+-------------------+\n");
-    printf("|           %-13d |        %-10d |\n", total_containers, total_ships_waiting);
-    printf("+-------------------------+-------------------+\n");
-}
-
-void exibir_menu() {
-    printf("\n=========================================\n");
-    printf("               TELA INICIAL              \n");
-    printf("=========================================\n\n");
-    printf("  1. Gerenciar Conteineres no Porto\n");
-    printf("  2. Gerenciar Navios na Fila\n");
-    printf("  3. Gerar Relatorio\n");
-    printf("  0. Sair\n\n");
-    printf("=========================================\n\n");
+int remover_container(int idConteiner, Lista* porto) {
+    int index = procura_conteiner(idConteiner, porto);
+    if (index < 0)
+        return 0;
+    return remover(index, porto);
 }

@@ -31,3 +31,12 @@ int inserir(void* item, Lista* lista) {
         return 1;
     }
 }
+
+int remover(int posicao, Lista* lista) {
+    if (vazia(lista))
+        return 0;
+    for (int i = 0; i < lista->ultimo; i++)
+        lista->itens[i] = lista->itens[i + 1];
+    lista->ultimo--;
+    return 1;
+}
