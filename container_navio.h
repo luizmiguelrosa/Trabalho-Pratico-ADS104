@@ -2,22 +2,23 @@
 #define CONTAINER_NAVIO_H
 
 // Definição da estrutura para Container
-typedef struct Container {
+typedef struct {
     int idContainer;      // Identificação do container
     int idNavio;          // Identificação do navio
-    struct Container* next; // Apontador para o próximo container
 } Container;
 
 // Definição da estrutura para Navio
-typedef struct Navio {
+typedef struct {
     int idNavio;          // Identificação do navio
-    Container* topContainer; // Ponteiro para o topo da pilha de containers
+    int quantidadeMaxConteiner;
+    int quantidadeConteiner;
+    Container* containers;
 } Navio;
 
 // Declaração das funções
 Container* criarContainer(int idContainer, int idNavio);
-void empilharContainer(Navio* navio, int idContainer);
-Container* desempilharContainer(Navio* navio);
+int empilharContainer(Navio* navio, int idContainer);
+Container desempilharContainer(Navio* navio);
 Navio* criarNavio(int idNavio);
 void exibirContainers(Navio* navio);
 void limparNavio(Navio* navio);

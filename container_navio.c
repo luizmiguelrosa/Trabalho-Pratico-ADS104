@@ -11,29 +11,28 @@ Container* criarContainer(int idContainer, int idNavio) {
     }
     novoContainer->idContainer = idContainer;
     novoContainer->idNavio = idNavio;
-    novoContainer->next = NULL;
     return novoContainer;
 }
 
 // Função para empilhar um container em um navio
-void empilharContainer(Navio* navio, int idContainer) {
+int empilharContainer(Navio* navio, int idContainer) {
+    if (navio->quantidadeConteiner >= navio->quantidadeMaxConteiner)
+        return 0;
     Container* novoContainer = criarContainer(idContainer, navio->idNavio);
-    if (novoContainer == NULL) {
-        return;
-    }
-    novoContainer->next = navio->topContainer; // Aponta para o atual topo da pilha
-    navio->topContainer = novoContainer; // Atualiza o topo da pilha para o novo container
+    navio->containers[navio->quantidadeConteiner] = *novoContainer;
+    navio->quantidadeConteiner++;
+    return 1;
 }
 
 // Função para desempilhar um container de um navio
-Container* desempilharContainer(Navio* navio) {
-    if (navio->topContainer == NULL) {
-        printf("A pilha de containers está vazia!\n");
-        return NULL;
+Container desempilharContainer(Navio* navio) {
+    if (navio->quantidadeConteiner == 0) {
+        printf("A pilha de containers esta vazia!\n");
+        Container containerVazio = {0, 0};
+        return containerVazio;
     }
-    Container* containerRemovido = navio->topContainer; // O container a ser removido
-    navio->topContainer = navio->topContainer->next; // Atualiza o topo para o próximo container
-    return containerRemovido; // Retorna o container removido
+    navio->quantidadeConteiner--;
+    return navio->containers[navio->quantidadeConteiner];
 }
 
 // Função para criar um novo navio
@@ -44,24 +43,8 @@ Navio* criarNavio(int idNavio) {
         return NULL;
     }
     novoNavio->idNavio = idNavio;
-    novoNavio->topContainer = NULL;
+    novoNavio->quantidadeMaxConteiner = 50;
+    novoNavio->containers = (Container*)malloc(sizeof(Container) * novoNavio->quantidadeMaxConteiner);
+    novoNavio->quantidadeConteiner = 0;
     return novoNavio;
-}
-
-// Função para exibir os containers em um navio
-void exibirContainers(Navio* navio) {
-    Container* atual = navio->topContainer;
-    while (atual != NULL) {
-        printf("Container ID: %d, Navio ID: %d\n", atual->idContainer, atual->idNavio);
-        atual = atual->next;
-    }
-}
-
-// Função para limpar a memória de todos os containers de um navio
-void limparNavio(Navio* navio) {
-    Container* containerRemovido;
-    while ((containerRemovido = desempilharContainer(navio)) != NULL) {
-        free(containerRemovido);
-    }
-    free(navio);
 }

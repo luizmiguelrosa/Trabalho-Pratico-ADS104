@@ -1,6 +1,39 @@
-#include <stdio.h>
 #include "lista.c"
 #include "container_navio.c"
+
+void exibir_tabela_navios(Lista* navios) {
+    if (vazia(navios)) {
+        printf("  +---------------------------------+\n");
+        printf("  |      Sem Navios registrados     |\n");
+        printf("  +---------------------------------+\n");
+    } else {
+        printf("+-----------------------+------------------------+\n");
+        printf("|    Navios no Porto    |  Quantidade Conteiner  |\n");
+        printf("+-----------------------+------------------------+\n");
+
+        for (int i = 0; i < navios->ultimo; i++) {
+            Navio* navioAux = navios->itens[i];
+            printf("|          %-12d |           %-12d |\n", navioAux->idNavio, navioAux->quantidadeConteiner);
+        }
+        printf("+-----------------------+------------------------+\n");   
+    }
+}
+
+void exibir_gerenciar_navios(Lista* navios) {
+    exibir_tabela_navios(navios);
+
+    printf("\n=========================================\n");
+    printf("               OPCOES              \n");
+    printf("=========================================\n\n");
+    printf("  1. Carregar Navio\n");
+    printf("  2. Descarregar Navio\n");
+    printf("  3. Adicionar Navio\n");
+    printf("  4. Remover Navio\n");
+    printf("  0. Sair\n\n");
+    printf("=========================================\n\n");
+    
+}
+
 
 void exibir_tabela_conteineres(Lista* porto) {
     if (vazia(porto)) {
@@ -8,15 +41,15 @@ void exibir_tabela_conteineres(Lista* porto) {
         printf("  |   Sem conteineres registrados   |\n");
         printf("  +---------------------------------+\n");
     } else {
-        printf("+-------------------------+---------------------+\n");
-        printf("|  Conteineres no Porto   | Navios Responsaveis |\n");
-        printf("+-------------------------+---------------------+\n");
+        printf("+--------------------------+-----------------------+\n");
+        printf("|   Conteineres no Porto   |  Navios Responsaveis  |\n");
+        printf("+--------------------------+-----------------------+\n");
 
         for (int i = 0; i < porto->ultimo; i++) {
             Container* container_aux = porto->itens[i];
-            printf("|           %-13d |        %-10d |\n", container_aux->idContainer, container_aux->idNavio);
+            printf("|            %-13d |          %-12d |\n", container_aux->idContainer, container_aux->idNavio);
         }
-        printf("+-------------------------+---------------------+\n");   
+        printf("+--------------------------+-----------------------+\n");   
     }
 }
 
