@@ -88,9 +88,8 @@ int main()
                         else
                             printf("\n  [X] Conteiner inexistente !\n");
 
-                    } else {
+                    } else
                         printf("\n  [X] Sem conteineres registrados !\n");
-                    }
                     getchar();
                     getchar();
                     break;
@@ -117,6 +116,39 @@ int main()
                 switch (escolha_navio)
                 {
                 case 1: //  Carregar Navio 
+                    exibir_tabela_navios(&navios);
+
+                    printf("\n===================================================\n");
+                    printf("                 Carregando Navio                  \n");
+                    printf("===================================================\n\n");
+
+                    if (!vazia(&navios)) {
+                        int idNavio;
+                        printf("  Digite a identificação do Navio desejado: ");
+                        scanf("%d", &idNavio);
+
+                        bool loop_carrega_navio = true;
+                        while (loop_carrega_navio)
+                        {
+                            limparTela();
+                            Lista portoAux;
+                            inicializaLista(&portoAux, MaxConteineresPorto);
+                            for (int i = 0; i < porto.tamanho_max; i++){
+                                Container * containerAux = porto.itens[i];
+                                if (containerAux->idNavio == idNavio)
+                                    inserir(containerAux, &portoAux);
+                            }
+
+                            exibir_gerenciar_navio(&portoAux);
+
+                            int escolha; // Parou aqui
+                            
+                        }
+                        
+                    } else
+                        printf("\n  [X] Sem navios registrados !\n");
+                    
+
                     getchar();
                     getchar();
                     break;
@@ -145,7 +177,7 @@ int main()
 
                     Navio* navioAux = criarNavio(idNavio);
 
-                    printf("  Digite a quantidade de Conteineres armazenados: ");
+                    printf("  Digite a quantidade de Conteineres armazenados (0 para nenhum): ");
                     scanf("%d", &quantidadeConteineres);
 
                     if (quantidadeConteineres > 0) {
@@ -158,7 +190,7 @@ int main()
                             }
                             
                             if (!empilharContainer(navioAux, idConteiner)) {
-                                printf("  [X] A pilha de containers está cheia!\n");
+                                printf("  [X] A pilha de containers esta cheia!\n");
                                 break;
                             }
                         }

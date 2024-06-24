@@ -1,6 +1,19 @@
 #include "lista.c"
 #include "container_navio.c"
 
+void exibir_gerenciar_navio(Lista* porto) {
+    exibir_gerenciar_conteineres(porto);
+
+    printf("\n=========================================\n");
+    printf("               OPCOES              \n");
+    printf("=========================================\n\n");
+    printf("  1. Carregar Container Especifico\n");
+    printf("  2. Carregar todos os Containers\n");
+    printf("  0. Sair\n\n");
+    printf("=========================================\n\n");
+    
+}
+
 void exibir_tabela_navios(Lista* navios) {
     if (vazia(navios)) {
         printf("  +---------------------------------+\n");
