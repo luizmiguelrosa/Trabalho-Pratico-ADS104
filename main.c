@@ -124,17 +124,14 @@ int main()
 
                     if (!vazia(&navios)) {
                         int idNavio;
-                        printf("  Digite a identificação do Navio desejado: ");
+                        printf("  Digite a identificacao do Navio desejado: ");
                         scanf("%d", &idNavio);
 
                         Navio* navioAux;
-                        int posicaoNavio;
                         for (int i = 0; i < navios.ultimo; i++) {
                             navioAux = navios.itens[i];
-                            if (navioAux->idNavio == idNavio) {
-                                posicaoNavio = i;
+                            if (navioAux->idNavio == idNavio)
                                 break;
-                            }
                         }
 
                         if (navioAux) {
@@ -155,7 +152,7 @@ int main()
                                     limparTela();
                                     exibir_gerenciar_navio(&portoAux);
 
-                                    int escolha, idContainer;
+                                    int escolha, idContainer, posicaoContainer;
                                     printf(" -> ");
                                     scanf("%d", &escolha);
 
@@ -168,47 +165,48 @@ int main()
                                         printf("                 Carregando Navio                  \n");
                                         printf("===================================================\n\n");
 
-                                        printf(" Digite a identificação do Container desejado: ");
+                                        printf("  Digite a identificacao do Container desejado: ");
                                         scanf("%d", &idContainer);
 
                                         Container * containerAux;
                                         for (int i = 0; i < porto.ultimo; i++){
                                             containerAux = porto.itens[i];
-                                            if (containerAux->idContainer == idContainer)
+                                            if (containerAux->idContainer == idContainer) {
+                                                posicaoContainer = i;
                                                 break;
+                                            }      
                                         }
 
                                         if (containerAux) {
-                                            if (empilharContainer(navioAux, containerAux->idNavio))
-                                                remover(posicaoNavio, &navios);
+                                            if (empilharContainer(navioAux, containerAux->idNavio)) {
+                                                printf("  [+] Container empilhado com sucesso !\n");
+                                                remover(posicaoContainer, &porto);
+                                                getchar();
+                                                getchar();
+                                            }
                                             else
-                                                printf(" [X] Quantidade maxima atingida de Containers!");
+                                                printf("  [X] Quantidade maxima atingida de Containers!\n");
                                         } else
                                             printf("  [X] Container inexistente!\n");
-
-                                        getchar();
-                                        getchar();
                                         break;
                                     
                                     default:
                                         loop_carrega_navio = !loop_carrega_navio;
-                                        getchar();
-                                        getchar();
                                         break;
                                     }
                                 } else {
-                                    printf(" [X] Nao existe nenhum Container para esse Navio!\n");
-                                    break;
+                                    printf("  [X] Nao existe nenhum Container para esse Navio!\n");
+                                    loop_carrega_navio = !loop_carrega_navio;
                                 }
                             }
                         } else
-                            printf(" [X] Navio inexistente!\n");
+                            printf("  [X] Navio inexistente!\n");
+                        getchar();
+                        getchar();
                     } else
                         printf("\n  [X] Sem navios registrados !\n");
-                    
-
-                    getchar();
-                    getchar();
+                        getchar();
+                        getchar();
                     break;
                 
                 case 2: // Descarregar Navio
