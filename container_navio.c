@@ -31,8 +31,9 @@ Container desempilharContainer(Navio* navio) {
         Container containerVazio = {0, 0};
         return containerVazio;
     }
+    Container containerAux = navio->containers[navio->quantidadeConteiner];
     navio->quantidadeConteiner--;
-    return navio->containers[navio->quantidadeConteiner];
+    return containerAux;
 }
 
 // Função para criar um novo navio

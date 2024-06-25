@@ -7,6 +7,7 @@
 
 int main()
 {
+    srand(time(NULL));
     Lista porto;
     inicializaLista(&porto, MaxConteineresPorto);
 
@@ -16,7 +17,6 @@ int main()
     bool loop_principal = true;
     while (loop_principal)
     {
-        srand(time(NULL));
         limparTela();
         exibir_menu();
 
@@ -210,8 +210,44 @@ int main()
                     break;
                 
                 case 2: // Descarregar Navio
-                    getchar();
-                    getchar();
+                    exibir_tabela_navios(&navios);
+                    printf("\n===================================================\n");
+                    printf("                 Descarregando Navio                  \n");
+                    printf("===================================================\n\n");
+
+                    if (!vazia(&navios)) {
+                        int idNavio;
+                        printf("  Digite a identificacao do Navio desejado: ");
+                        scanf("%d", &idNavio);
+
+                        Navio* navioAux;
+                        for (int i = 0; i < navios.ultimo; i++) {
+                            navioAux = navios.itens[i];
+                            if (navioAux->idNavio == idNavio)
+                                break;
+                        }
+
+                        if (navioAux) {
+                            if (navioAux->quantidadeConteiner > 0) {
+                                int quantidade_inicial = navioAux->quantidadeConteiner;
+                                for (int i = 0; i < navioAux->quantidadeConteiner; i++) {
+                                    Container containerAux = desempilharContainer(navioAux);
+                                    if (containerAux.idContainer > 0) {
+                                        inserir(&containerAux, &porto);
+                                    } else
+                                        break;
+                                }
+                                printf("  [+] Foram descarregados %d containers com sucesso!", quantidade_inicial - navioAux->quantidadeConteiner);
+                            } else
+                                printf("\n  [X] Nao existe nenhum Container para esse Navio!\n");
+                        } else
+                            printf("  [X] Navio inexistente!\n");
+                        getchar();
+                        getchar();
+                    } else
+                        printf("\n  [X] Sem navios registrados !\n");
+                        getchar();
+                        getchar();
                     break;
 
                 case 3: // Adicionar Navio
@@ -238,8 +274,9 @@ int main()
 
                     if (quantidadeConteineres > 0) {
                         printf("  [#] Gerando Conteineres\n");
+                        int idConteiner;
                         for (int i = 0; i < quantidadeConteineres; i++) {
-                            int idConteiner = gerarNumero(50, 1000);
+                            idConteiner = gerarNumero(50, 1000);
                             
                             while (!procura_conteiner(idConteiner, &porto)) {
                                 idConteiner = gerarNumero(50, 1000);
